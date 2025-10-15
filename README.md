@@ -142,7 +142,7 @@ When exporting, answers are written to `results.json` and binary blobs are store
 1. **Add a template** via the dashboard by pasting a template URL into the Sync Link field.
 2. **Create instances** to capture responses for that template.
 3. **Fill out the survey**; uploads and locations are preserved locally.
-4. **Save** to persist data to IndexedDB.
+4. **Submit** to persist data and return to the instance list, or **Cancel** to discard unsaved edits.
 5. **Export All** to download a ZIP containing `results.json` + attachments for offline transfer.
 
 All data stays in the browser storage until explicitly deleted. Use the Delete buttons on templates or instances to remove local copies.

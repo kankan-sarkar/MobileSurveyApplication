@@ -12,6 +12,6 @@ class CORSRequestHandler(http.server.SimpleHTTPRequestHandler):
         return super().end_headers()
 
 if __name__ == "__main__":
-    with socketserver.TCPServer(("", PORT), CORSRequestHandler) as httpd:
+    with socketserver.TCPServer(("0.0.0.0", PORT), CORSRequestHandler) as httpd:
         print(f"Serving with CORS at http://localhost:{PORT}")
         httpd.serve_forever()

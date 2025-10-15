@@ -11,6 +11,13 @@
       "title": "Site Details",
       "questions": [
         {
+          "id": "title",
+          "type": "textbox",
+          "label": "Site Name",
+          "placeholder": "Enter official site name",
+          "required": true
+        },
+        {
           "id": "site_name",
           "type": "textbox",
           "label": "Site Name",
