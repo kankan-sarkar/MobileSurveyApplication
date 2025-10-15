@@ -1,0 +1,91 @@
+{
+  "id": "field_audit_2025",
+  "title": "Field Site Audit",
+  "version": 2.3,
+  "metadata": {
+    "author": "Quality Assurance Team",
+    "createdAt": "2025-10-15T00:00:00Z"
+  },
+  "sections": [
+    {
+      "title": "Site Details",
+      "questions": [
+        {
+          "id": "site_name",
+          "type": "textbox",
+          "label": "Site Name",
+          "placeholder": "Enter official site name",
+          "required": true
+        },
+        {
+          "id": "site_type",
+          "type": "dropdown",
+          "label": "Site Type",
+          "options": ["Warehouse", "Retail Outlet", "Office", "Other"],
+          "required": true
+        },
+        {
+          "id": "visit_date",
+          "type": "textbox",
+          "label": "Date of Visit (YYYY-MM-DD)",
+          "required": true
+        }
+      ]
+    },
+    {
+      "title": "Safety Checklist",
+      "questions": [
+        {
+          "id": "ppe_available",
+          "type": "dropdown",
+          "label": "Is PPE available on-site?",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "id": "hazards_noted",
+          "type": "textbox",
+          "label": "List any hazards noted",
+          "required": false
+        },
+        {
+          "id": "hazard_photos",
+          "type": "attachment",
+          "label": "Upload hazard photos",
+          "accept": "image/*",
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Location Capture",
+      "questions": [
+        {
+          "id": "gps_location",
+          "type": "location",
+          "label": "Capture GPS coordinates",
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Final Remarks",
+      "questions": [
+        {
+          "id": "overall_rating",
+          "type": "dropdown",
+          "label": "Overall compliance rating",
+          "options": ["1", "2", "3", "4", "5"],
+          "required": true
+        },
+        {
+          "id": "auditor_signature",
+          "type": "attachment",
+          "label": "Attach auditor signature (image/pdf)",
+          "accept": "image/*,application/pdf",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

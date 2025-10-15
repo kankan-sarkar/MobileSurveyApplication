@@ -1,70 +1,164 @@
-# Getting Started with Create React App
+# Mobile Survey Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Mobile Survey Application is an offline-capable data collection tool built with React. Field teams can sync structured survey templates from a remote JSON endpoint, capture responses (including photos, attachments, and GPS coordinates), and store everything locally in the browser via IndexedDB. When you're back online, survey results can be exported as a ZIP archive for further processing.
 
-## Available Scripts
+## ✨ Key Features
 
-In the project directory, you can run:
+- **Offline-first storage** powered by [Dexie](https://dexie.org/) (IndexedDB).
+- **Template syncing** from a remote JSON URL with version checks.
+- **Flexible question types**: text, dropdown, attachment upload, camera capture, and geolocation.
+- **Survey instance management** with create/edit/delete flows per template.
+- **Bulk export** that zips JSON results plus any captured files for analysis.
 
-### `npm start`
+## 🧱 Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [React 19](https://react.dev/) + [React Router 6](https://reactrouter.com/) for UI and navigation.
+- [Dexie](https://dexie.org/) for IndexedDB interactions.
+- [Axios](https://axios-http.com/) for HTTP requests.
+- [JSZip](https://stuk.github.io/jszip/) and [FileSaver](https://github.com/eligrey/FileSaver.js/) for exports.
+- [Create React App](https://create-react-app.dev/) build tooling via `react-scripts@5`.
+- [Testing Library](https://testing-library.com/docs/react-testing-library/intro/) + Jest for unit testing.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## ✅ Prerequisites
 
-### `npm test`
+- **Node.js** ≥ 18.17.0 (LTS recommended).
+- **npm** ≥ 9 (bundled with recent Node builds).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Verify your toolchain:
 
-### `npm run build`
+```powershell
+node -v
+npm -v
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> 💡 If you're using a Node version manager (nvm, fnm, volta), switch to an LTS release before installing dependencies.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Clone the repository**
+	 ```powershell
+	 git clone https://github.com/kankan-sarkar/MobileSurveyApplication.git
+	 cd MobileSurveyApplication
+	 ```
+2. **Install dependencies**
+	 ```powershell
+	 npm install
+	 ```
+3. **Start the development server**
+	 ```powershell
+	 npm start
+	 ```
+	 The app opens on [http://localhost:3000](http://localhost:3000). Hot reloading is enabled, so edits update automatically.
 
-### `npm run eject`
+If you prefer Yarn or PNPM, remove the existing `package-lock.json` and install with your package manager of choice; the scripts below remain the same.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📦 Available Scripts
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Command | Description |
+| --- | --- |
+| `npm start` | Runs the app in development mode with hot reloading. |
+| `npm test` | Launches Jest in watch mode. See note below for CI usage. |
+| `npm run build` | Produces an optimized production bundle in `build/`. |
+| `npm run eject` | Copies CRA's build configuration into the repo (irreversible). |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Running Tests Non-Interactively
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+CRA's default test runner watches for file changes. In automated environments (CI/CD), disable watch mode:
 
-## Learn More
+```powershell
+$Env:CI = "true"
+npm test
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Production Build
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```powershell
+npm run build
+```
 
-### Code Splitting
+The build artifacts land in `build/`. Deploy the folder to any static hosting provider (Netlify, Vercel, S3, Firebase Hosting, etc.).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🗂️ Project Structure
 
-### Analyzing the Bundle Size
+```
+src/
+├── App.js              # Application routes
+├── pages/              # Dashboard, SurveyInstances, SurveyForm, NotFound
+├── db/db.js            # Dexie database schema definitions
+├── App.css / index.css # Global styling (currently minimal)
+├── App.test.js         # Smoke test verifying dashboard renders
+└── reportWebVitals.js  # Optional performance reporting hook
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📝 Survey Template Format
 
-### Making a Progressive Web App
+Templates are expected to be JSON documents accessible via HTTPS. The dashboard's **Sync Link** field fetches and validates the payload. A minimal template looks like this:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```json
+{
+	"id": "household-survey",
+	"title": "Household Survey",
+	"version": 2,
+	"sections": [
+		{
+			"id": "demographics",
+			"title": "Demographics",
+			"questions": [
+				{
+					"id": "respondent-name",
+					"label": "Respondent name",
+					"type": "textbox"
+				},
+				{
+					"id": "photo",
+					"label": "Household photo",
+					"type": "camera"
+				}
+			]
+		}
+	]
+}
+```
 
-### Advanced Configuration
+**Required fields**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- `id` – Unique string identifier used as the template primary key.
+- `title` – Display name shown in the dashboard and exports.
+- `version` – Used to detect updates when syncing.
+- `sections` – Array of sections, each with `questions`.
 
-### Deployment
+**Supported question types**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- `textbox` – Freeform multi-line text.
+- `dropdown` – Renders a `<select>`; include an `options` array.
+- `camera` – Prompts for photo capture or upload.
+- `attachment` – Accepts file uploads; provide `accept` MIME filters.
+- `location` – Captures latitude/longitude using the browser geolocation API.
 
-### `npm run build` fails to minify
+When exporting, answers are written to `results.json` and binary blobs are stored under the `attachments/` folder in the generated ZIP.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📤 Working with Survey Data
+
+1. **Add a template** via the dashboard by pasting a template URL into the Sync Link field.
+2. **Create instances** to capture responses for that template.
+3. **Fill out the survey**; uploads and locations are preserved locally.
+4. **Save** to persist data to IndexedDB.
+5. **Export All** to download a ZIP containing `results.json` + attachments for offline transfer.
+
+All data stays in the browser storage until explicitly deleted. Use the Delete buttons on templates or instances to remove local copies.
+
+## 🧪 Testing Notes
+
+- DOM assertions rely on `@testing-library/jest-dom` matchers (configured in `src/setupTests.js`).
+- The sample `App.test.js` ensures the dashboard renders; add more tests to cover survey flows as needed.
+
+## 🔧 Troubleshooting
+
+- **IndexedDB disabled**: Ensure the browser allows local storage and not in private/incognito mode.
+- **Geolocation blocked**: Browsers require HTTPS (or localhost) and explicit user permission.
+- **Template sync fails**: Confirm the URL returns valid JSON matching the format above and that CORS headers allow your origin.
+- **Build errors on Windows**: Clear caches with `npm cache clean --force` and reinstall dependencies.
+
+## 📄 License
+
+This project is distributed under the terms of the [LICENSE](./LICENSE) file.
